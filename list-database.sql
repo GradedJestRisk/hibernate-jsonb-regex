@@ -1,0 +1,1 @@
+SELECT id, content->'reference' AS reference FROM item;

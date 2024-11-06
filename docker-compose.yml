@@ -16,3 +16,5 @@ services:
 #    https://github.com/bitnami/containers/blob/main/bitnami/postgresql/README.md#customizable-environment-variables
     environment:
       - POSTGRESQL_PASSWORD=password123
+    volumes:
+      - ./postgres-conf:/bitnami/postgresql/conf
