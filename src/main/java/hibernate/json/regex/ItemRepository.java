@@ -23,13 +23,29 @@ public class ItemRepository {
         String query = """
         SELECT id, content::TEXT
         FROM item
-        WHERE JSONB_PATH_EXISTS(
+        WHERE 1=1
+            AND JSONB_PATH_EXISTS(
                       item.content, '$.reference ? (@ == $VALUE )',
                       JSONB_BUILD_OBJECT('VALUE', :value)
             );
         """;
         Query nativeQuery = entityManager.createNativeQuery(query);
         nativeQuery.setParameter("value", value);
+        return nativeQuery.getResultList();
+    }
+
+    public List<Object[]> findByReferenceRegex(String pattern){
+        String query = """
+        SELECT id, content::TEXT
+        FROM item
+        WHERE 1=1
+            AND item.content @\\?\\? FORMAT(
+                                        '$.reference ? (@ LIKE_REGEX %s)', 
+                                        TO_JSON(:pattern) 
+                                     )::JSONPATH
+        """;
+        Query nativeQuery = entityManager.createNativeQuery(query);
+        nativeQuery.setParameter("pattern", pattern);
         return nativeQuery.getResultList();
     }
 

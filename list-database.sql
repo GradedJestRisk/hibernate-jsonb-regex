@@ -1,1 +1,1 @@
-SELECT id, content->'reference' AS reference FROM item;
+SELECT id, content->'reference' AS reference, content FROM item;
